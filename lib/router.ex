@@ -9,20 +9,21 @@ defmodule Games.Router do
     send_resp(conn, 200, "       Welcome to the Library
 
     URLs:
-     _________________________________
-    |  /all_gamess   (Show all Games)|
-    |  /games/month  (Sort by Month) |
-    |  /games/name   (Search by Name)|
-    |________________________________|
+     _________________________________________
+    |  /all_games   (Show all Games)          |
+    |  /games/month  (Lists by Month)         |
+    |  /games/name   (Search by Name)         |
+    |  /games/publisher (Search by Publisher) |
+    |_________________________________________|
     ")
   end
 
-  match "/all_games", via: :get do
-    render_json(conn, Games.Library.list_games())
+  match "/game/all", via: :get do
+    render_json(conn, Games.Library.all())
   end
 
-  get "/games/:month" do
-    game = Games.Library.sort_by_month(month: "#{month}")
+  get "/game/:month" do
+    game = Games.Library.search_by_month(month: "#{month}")
     render_json(conn, game)
   end
 
