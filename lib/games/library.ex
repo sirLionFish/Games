@@ -36,4 +36,19 @@ defmodule Games.Library do
       Map.get(game, :id) == id
     end)
   end
+
+  def search_status(status: status) do
+    all() |> Enum.filter(fn game ->
+      Map.get(game, :status) =~ status
+    end)
+  end
+
+  def edit(id: id) do
+    game = search_id(id: id)
+    Enum.reject(all(), fn g ->
+      g == game
+    end)
+  end
+
+
 end

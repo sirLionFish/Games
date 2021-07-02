@@ -10,10 +10,11 @@ defmodule Games.Router do
 
     URLs:
      _________________________________________
-    |  /all_games   (Show all Games)          |
-    |  /games/month  (Lists by Month)         |
-    |  /games/name   (Search by Name)         |
-    |  /games/publisher (Search by Publisher) |
+    |  /game/all   (Show all Games)           |
+    |  /month/:month  (Lists by Month)        |
+    |  /name/:name   (Search by Name)         |
+    |  /status/:status (Search by Status      |
+    |  /publisher/all (Search by Publisher)   |
     |_________________________________________|
     ")
   end
@@ -22,14 +23,23 @@ defmodule Games.Router do
     render_json(conn, Games.Library.all())
   end
 
-  get "/game/:month" do
+  get "/month/:month" do
     game = Games.Library.search_by_month(month: "#{month}")
     render_json(conn, game)
   end
 
-  get "/game/:name" do
+  get "/name/:name" do
     game = Games.Library.search_name(name: "#{name}")
     render_json(conn, game)
+  end
+
+  get "/status/:status" do
+    game = Games.Library.search_status(status: "#{status}")
+    render_json(conn, game)
+  end
+
+  get "/publisher/all" do
+    render_json(conn, Games.Publisher.all())
   end
 
   defp render_json(conn, data) do

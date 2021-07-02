@@ -9,6 +9,7 @@ defmodule Games.Application do
   def start(_type, _args) do
     children = [
       Games.Library,
+      Games.Publisher,
       {Plug.Cowboy, scheme: :http, plug: Games.Router, options: [port: 4000]}
       # Starts a worker by calling: Games.Worker.start_link(arg)
       # {Games.Worker, arg}
