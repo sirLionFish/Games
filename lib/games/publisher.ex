@@ -28,9 +28,4 @@ defmodule Games.Publisher do
       Map.get(game, :publisher) =~ publisher
     end)
   end
-
-  def add_detail(publisher) do
-    info = filter_game(publisher: publisher)
-    Agent.update(__MODULE__, fn state -> [info | state] end)
-  end
 end
