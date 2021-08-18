@@ -8,8 +8,9 @@ defmodule Games.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      Games.Library,
-      Games.Publisher,
+      Games.Store,
+      Games.Publishers,
+      Games.Publisher.Store,
       {Plug.Cowboy, scheme: :http, plug: Games.Router, options: [port: 4000]}
       # Starts a worker by calling: Games.Worker.start_link(arg)
       # {Games.Worker, arg}

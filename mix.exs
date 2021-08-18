@@ -25,6 +25,7 @@ defmodule Games.MixProject do
       {:plug, "~> 1.11"},
       {:plug_cowboy, "~> 2.0"},
       {:jason, "~> 1.2"},
+      {:uuid, "~> 1.1"}
     ]
   end
 end

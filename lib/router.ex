@@ -20,26 +20,26 @@ defmodule Games.Router do
   end
 
   match "/game/all", via: :get do
-    render_json(conn, Games.Library.all())
+    render_json(conn, Games.Store.all())
   end
 
   get "/month/:month" do
-    game = Games.Library.search_by_month(month: "#{month}")
+    game = Games.Store.search_by_month(month: "#{month}")
     render_json(conn, game)
   end
 
   get "/name/:name" do
-    game = Games.Library.search_name(name: "#{name}")
+    game = Games.Store.search_name(name: "#{name}")
     render_json(conn, game)
   end
 
   get "/status/:status" do
-    game = Games.Library.search_status(status: "#{status}")
+    game = Games.Store.search_status(status: "#{status}")
     render_json(conn, game)
   end
 
   get "/publisher/all" do
-    render_json(conn, Games.Publisher.all())
+    render_json(conn, Games.Publishers.show_all())
   end
 
   defp render_json(conn, data) do
