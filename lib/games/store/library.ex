@@ -5,17 +5,11 @@ defmodule Games.Library do
     quote do
      use Agent
 
-      def start_link(file_path) do
-        file_path
-          |> File.read()
-          |> case do
-            {:ok, content} ->
-              Jason.decode!(content)
-
-            {:error, _} -> []
-          end
-
-        Agent.start_link(fn -> [] end, name: __MODULE__)
+      def start_link(_opt) do
+        Agent.start_link(fn ->
+          Games.Persistence.load(unquote(module)) end,
+          name: __MODULE__
+        )
       end
 
       def all do
@@ -51,7 +45,7 @@ defmodule Games.Library do
         end)
       end
 
-      def search_by_publishers(publisher: publisher) do
+      def search_by_publisher(publisher: publisher) do
         all() |> Enum.filter(fn game ->
           Map.get(game, :publisher) =~ publisher
         end)
@@ -67,6 +61,26 @@ defmodule Games.Library do
         all() |> Enum.filter(fn game ->
           Map.get(game, :status) =~ status
         end)
+      end
+
+      def search_platform(platform: platform) do
+        all() |> Enum.filter(fn game ->
+          Map.get(game, :platform) =~ platform
+        end)
+      end
+
+      def search([{key, value}]) do
+        all()
+          |> Enum.filter(fn item ->
+            item = Map.from_struct(item)
+
+            case {Map.get(item, key), value} do
+              {%Games.Store.Association{resource_id: id}, value} when is_map(value) ->
+                id == Map.get(value, :id)
+
+              {data, value} -> data == value
+            end
+          end)
       end
 
       def get(resource_id) do

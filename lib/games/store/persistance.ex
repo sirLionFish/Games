@@ -9,10 +9,10 @@ defmodule Games.Persistence do
         |> Enum.map(fn param ->
           param
           |> Enum.map(fn {key, value} ->
+            value = maybe_parse_association(value)
             {String.to_existing_atom(key), value}
           end)
           |> Enum.into(%{})
-
         end)
 
         |> Enum.map(fn param ->
@@ -37,4 +37,16 @@ defmodule Games.Persistence do
     Application.app_dir(:games)
     |> Path.join("priv/stores/#{module_name}.json")
   end
+
+  defp maybe_parse_association(%{
+    "module" => module,
+    "resource_id" => resource_id}) do
+    module = String.to_atom(module)
+
+    %Games.Store.Association{
+      module: module, resource_id: resource_id
+    }
+  end
+
+  defp maybe_parse_association(value), do: value
 end

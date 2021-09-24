@@ -1,17 +1,34 @@
 defmodule Games.Publisher do
-  defstruct [:id, :name, :founded, :headquarter, :game]
-
+  @derive Jason.Encoder
+defstruct [:id, :name, :year, :location, :platform]
   defmodule Store do
     use Games.Library, module: Games.Publisher
   end
 
-  def new(%Games{} = game, %{name: name, founded: founded, headquarter: headquarter}) do
+  # def new(%Games{} = game, %{name: name, year: year, location: location, platform: platform}) do
+  #   %__MODULE__{
+  #     id: UUID.uuid4(),
+  #     name: name,
+  #     year: year,
+  #     location: location,
+  #     platform: platform,
+  #     game: Games.Store.Association.new(game)
+  #   }
+  # end
+
+   def new(name: name, year: year, location: location, platform: platform) do
     %__MODULE__{
       id: UUID.uuid4(),
       name: name,
-      founded: founded,
-      headquarter: headquarter,
-      game: Games.Store.Association.new(game)
-    }
+      year: year,
+      location: location,
+      platform: platform}
+  end
+
+  def show(publisher) do
+    [
+      Games.Publisher.Store.search(name: publisher),
+      Games.Store.search(publisher: publisher)
+    ]
   end
 end
