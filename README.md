@@ -1,6 +1,6 @@
 # Games
 
-**TODO: Add description**
+A simple data representation using games as palceholders
 
 ## Installation
 
